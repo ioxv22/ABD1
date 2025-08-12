@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر الرسمي - أبطال أبوظبي ديسكورد</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- نافذة تسجيل الدخول -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <img src="https://i.ibb.co/99mqbZ9P/512.png" alt="شعار المتجر" class="login-logo">
+                <h1>𝐀𝐛𝐮 𝐃𝐡𝐚𝐛𝐢 𝐡𝐞𝐫𝐨𝐞𝐬 𝐑𝐏 STORE</h1>
+                <p>يرجى تسجيل الدخول للوصول إلى المتجر</p>
+            </div>
+            
+            <div class="login-body">
+                <div class="login-options">
+                    <button class="discord-login-btn" onclick="loginWithDiscord()">
+                        <i class="fab fa-discord"></i>
+                        تسجيل الدخول بالديسكورد
+                    </button>
+                    
+                    <div class="login-divider">
+                        <span>أو</span>
+                    </div>
+                    
+                    <div class="manual-login">
+                        <h3>دخول مؤقت</h3>
+                        <p class="demo-note">للأعضاء الجدد - الرتبة الافتراضية: Member</p>
+                        
+                        <div class="username-input">
+                            <label>اسم المستخدم:</label>
+                            <input type="text" id="usernameInput" placeholder="أدخل اسم المستخدم...">
+                        </div>
+                        
+                        <div class="admin-login-section" style="display: none;">
+                            <div class="admin-divider">
+                                <span>تسجيل دخول إدارة</span>
+                            </div>
+                            
+                            <div class="role-selection">
+                                <label>اختر رتبتك الإدارية:</label>
+                                <select id="roleSelect">
+                                    <option value="member">👤 Member (افتراضي)</option>
+                                    <option value="vip">💎 VIP</option>
+                                    <option value="staff">🎯 Staff</option>
+                                    <option value="moderator">🛡️ Moderator</option>
+                                    <option value="admin">⚡ Admin</option>
+                                    <option value="owner">👑 Owner</option>
+                                </select>
+                            </div>
+                            
+                            <div class="admin-key-input">
+                                <label>مفتاح الإدارة:</label>
+                                <input type="password" id="adminKeyInput" placeholder="أدخل مفتاح الرتبة...">
+                                <small>مطلوب للرتب الإدارية فقط</small>
+                            </div>
+                        </div>
+                        
+                        <button class="toggle-admin-btn" onclick="toggleAdminLogin()">
+                            <i class="fas fa-key"></i>
+                            تسجيل دخول إدارة
+                        </button>
+                        
+                        <div class="member-info">
+                            <p><i class="fas fa-info-circle"></i> الدخول العادي يمنحك رتبة Member (عضو) للتصفح والشراء</p>
+                        </div>
+                        
+                        <button class="manual-login-btn" onclick="manualLogin()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            تسجيل الدخول
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="login-info">
+                    <div class="info-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>آمن ومحمي بالكامل</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-users"></i>
+                        <span>للأعضاء المسجلين فقط</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-crown"></i>
+                        <span>رتب ومميزات حصرية</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة العلوي -->
+    <div id="userStatusBar" class="user-status-bar" style="display: none;">
+        <div class="container">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img id="userAvatar" src="" alt="صورة المستخدم">
+                </div>
+                <div class="user-details">
+                    <span class="username" id="displayUsername"></span>
+                    <span class="user-role" id="displayUserRole"></span>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="role-badge" id="roleBadge"></div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- خلفية متحركة -->
+    <div class="background-overlay">
+        <img src="https://i.ibb.co/kg3mP2yq/Banner-Discord-2.gif" alt="Discord Background" class="background-gif">
+    </div>
+
+    <!-- الهيدر -->
+    <header class="header" id="header" style="display: none;">
+        <div class="container">
+            <div class="logo">
+                <img src="https://i.ibb.co/99mqbZ9P/512.png" alt="شعار المتجر">
+                <h1>𝐀𝐛𝐮 𝐃𝐡𝐚𝐛𝐢 𝐡𝐞𝐫𝐨𝐞𝐬 𝐑𝐏 STORE </h1>
+            </div>
+            <nav class="nav">
+                <a href="#store">المتجر</a>
+                <a href="#rules">القوانين</a>
+                <a href="#payment">الدفع</a>
+                <a href="#ids">الآيديات</a>
+                <a href="#packages">الباقات</a>
+                <a href="#heroes">الأبطال</a>
+                <a href="#admin" id="adminLink" style="display: none;">
+                    <i class="fas fa-cog"></i> لوحة التحكم
+                </a>
+                <a href="https://discord.gg/Bty6gpqt" target="_blank" class="discord-link">
+                    <i class="fab fa-discord"></i> ديسكورد السيرفر
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- لوحة التحكم للإدارة -->
+    <section id="admin" class="admin-section" style="display: none;">
+        <div class="container">
+            <div class="admin-header">
+                <h1><i class="fas fa-crown"></i> لوحة التحكم</h1>
+                <p>إدارة المتجر والطلبات</p>
+            </div>
+            
+            <div class="admin-dashboard">
+                <div class="admin-cards">
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h3>الطلبات الجديدة</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="newOrdersCount">12</div>
+                            <p>طلب جديد في انتظار المراجعة</p>
+                            <button class="card-btn" onclick="viewOrders()">عرض الطلبات</button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <i class="fas fa-users"></i>
+                            <h3>الأعضاء المسجلين</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="membersCount">156</div>
+                            <p>عضو مسجل في المتجر</p>
+                            <button class="card-btn" onclick="viewMembers()">إدارة الأعضاء</button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>المبيعات اليوم</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="todaySales">850$</div>
+                            <p>إجمالي المبيعات اليومية</p>
+                            <button class="card-btn" onclick="viewSales()">تقرير المبيعات</button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card owner-only" style="display: none;">
+                        <div class="card-header">
+                            <i class="fas fa-cog"></i>
+                            <h3>إعدادات النظام</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number">⚙️</div>
+                            <p>إدارة المتجر والأسعار</p>
+                            <button class="card-btn" onclick="openSettings()">الإعدادات</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-tables">
+                    <div class="table-section">
+                        <h3><i class="fas fa-clock"></i> الطلبات الأخيرة</h3>
+                        <div class="orders-table" id="recentOrders">
+                            <!-- سيتم ملؤها بـ JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- القسم الرئيسي -->
+    <main id="mainContent" style="display: none;">
+        <!-- المتجر الرسمي -->
+        <section id="store" class="hero-section">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1 class="hero-title">𝐀𝐛𝐮 𝐃𝐡𝐚𝐛𝐢 𝐡𝐞𝐫𝐨𝐞𝐬 𝐑𝐏 STORE </h1>
+                    <p class="hero-description">أهلاً وسهلاً بكم في المتجر الرسمي لسيرفر أبطال أبوظبي ديسكورد. هنا تجدون جميع الباقات والأيديات المميزة بأفضل الأسعار.</p>
+                    <a href="#packages" class="cta-button">تصفح الباقات</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- قوانين المتجر -->
+        <section id="rules" class="rules-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-exclamation-triangle"></i> قوانين المتجر</h2>
+                </div>
+                <div class="rules-content fade-in">
+                    <ol class="rules-list">
+                        <li>في حالة شراء حزمه لايمكنك تسليمها لـ شخص او بيعهاَ</li>
+                        <li>في حال شراء آيدي لايمكنك تسليمه لأي شخص او بيعه</li>
+                        <li>في حال آستخدمت الحزمه بسوء سيتم سحبها عنك من قبل الإدارة</li>
+                        <li>لايمكنك استرداد آموالك في حال دفعت للحزمة آو الأيدي او لـ العصابه</li>
+                        <li>في حال شراء آيدي و لم تتواجد لمده زمنيه شهر سوف يتم سحب الأيدي</li>
+                        <li>بحال طلعت من الدسكورد مانتحمل أي مسؤولية لحسابك وأنت تتحمل مسؤوليته ^ بحال حسابك تبند، فيه إجراءات ثانية (لازم الايصال يكون عندك)</li>
+                        <li>في حال تبنيدك (باند نهائي) من السيرفر، سوف يتم سحب جميع الأغراض التي تم شراؤها من المتجر ولا يوجد تعويض لذلك</li>
+                    </ol>
+                    <div class="rules-note">
+                        <p><strong>⚠️ ملاحظة:</strong> في حال شرائك من أحد منتجات المتجر، تعتبر بموافقتك التامة على القوانين</p>
+                        <p>القوانين تتحدث كل فترة، وجهلك للقوانين لا يعفيك من تطبيقها</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- طرق الدفع -->
+        <section id="payment" class="payment-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-credit-card"></i> طرق الدفع</h2>
+                </div>
+                <div class="payment-methods fade-in">
+                    <div class="payment-card">
+                        <img src="https://mahabharti.in/global/wp-content/uploads/2022/01/FAB-Bank-Logo.png" alt="FAB Bank">
+                        <h3>FAB Bank</h3>
+                        <p class="iban">الآيبان: AE79 0355 6400 1140 8360 066</p>
+                    </div>
+                    <div class="payment-card">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/07/PayPal-Logo.png" alt="PayPal">
+                        <h3>PayPal</h3>
+                        <a href="https://www.paypal.me/BINSHAMLAN1" class="paypal-link" target="_blank">الدفع عبر PayPal</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- أسعار الآيديات -->
+        <section id="ids" class="ids-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-user"></i> أسعار الآيديات</h2>
+                </div>
+                <div class="ids-content fade-in">
+                    <div class="ids-category">
+                        <h3>الآيديات الثنائية</h3>
+                        
+                        <!-- آيدي ثنائي مميز -->
+                        <div class="id-item">
+                            <h4>آيدي ثنائي مميز</h4>
+                            <p>مثال: 55 - 66 - 77</p>
+                            <span class="price">75$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثنائي المطلوب:</label>
+                                    <input type="number" id="twoDigitSpecial" placeholder="55" min="10" max="99" oninput="updateNumericPreview('twoDigitSpecial', 'previewTwoDigitSpecial', 'buyBtnTwoDigitSpecial')">
+                                    <div class="numeric-preview">معاينة: <span id="previewTwoDigitSpecial">--</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnTwoDigitSpecial" onclick="buyNumericId('آيدي ثنائي مميز', '75$', 'twoDigitSpecial')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- آيدي ثنائي عادي -->
+                        <div class="id-item">
+                            <h4>آيدي ثنائي عادي</h4>
+                            <p>مثال: 40 - 30 - 20</p>
+                            <span class="price">65$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثنائي المطلوب:</label>
+                                    <input type="number" id="twoDigitNormal" placeholder="40" min="10" max="99" oninput="updateNumericPreview('twoDigitNormal', 'previewTwoDigitNormal', 'buyBtnTwoDigitNormal')">
+                                    <div class="numeric-preview">معاينة: <span id="previewTwoDigitNormal">--</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnTwoDigitNormal" onclick="buyNumericId('آيدي ثنائي عادي', '65$', 'twoDigitNormal')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- آيدي ثنائي مميز خاص -->
+                        <div class="id-item special">
+                            <h4>آيدي ثنائي مميز خاص</h4>
+                            <p>مثال: 10 - 8 - 7 - 9 - 20 - 19</p>
+                            <span class="price">200$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثنائي الخاص:</label>
+                                    <select id="twoDigitSpecialSelect" onchange="updateSpecialPreview('twoDigitSpecialSelect', 'previewTwoDigitSpecialSelect', 'buyBtnTwoDigitSpecialSelect')">
+                                        <option value="">اختر من القائمة...</option>
+                                        <option value="10">10</option>
+                                        <option value="8">8</option>
+                                        <option value="7">7</option>
+                                        <option value="9">9</option>
+                                        <option value="20">20</option>
+                                        <option value="19">19</option>
+                                    </select>
+                                    <div class="numeric-preview">معاينة: <span id="previewTwoDigitSpecialSelect">--</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnTwoDigitSpecialSelect" onclick="buyNumericId('آيدي ثنائي مميز خاص', '200$', 'twoDigitSpecialSelect')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ids-category">
+                        <h3>الآيديات الثلاثية</h3>
+                        
+                        <!-- آيدي ثلاثي مميز مكرر -->
+                        <div class="id-item">
+                            <h4>آيدي ثلاثي مميز مكرر</h4>
+                            <p>مثال: 111, 222, 333</p>
+                            <span class="price">55$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثلاثي المكرر:</label>
+                                    <select id="threeDigitRepeated" onchange="updateSpecialPreview('threeDigitRepeated', 'previewThreeDigitRepeated', 'buyBtnThreeDigitRepeated')">
+                                        <option value="">اختر من القائمة...</option>
+                                        <option value="111">111</option>
+                                        <option value="222">222</option>
+                                        <option value="333">333</option>
+                                        <option value="444">444</option>
+                                        <option value="555">555</option>
+                                        <option value="666">666</option>
+                                        <option value="777">777</option>
+                                        <option value="888">888</option>
+                                        <option value="999">999</option>
+                                    </select>
+                                    <div class="numeric-preview">معاينة: <span id="previewThreeDigitRepeated">---</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnThreeDigitRepeated" onclick="buyNumericId('آيدي ثلاثي مميز مكرر', '55$', 'threeDigitRepeated')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- آيدي ثلاثي مميز -->
+                        <div class="id-item">
+                            <h4>آيدي ثلاثي مميز</h4>
+                            <p>مثال: 112, 212, 312</p>
+                            <span class="price">45$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثلاثي المطلوب:</label>
+                                    <input type="number" id="threeDigitSpecial" placeholder="112" min="100" max="999" oninput="updateNumericPreview('threeDigitSpecial', 'previewThreeDigitSpecial', 'buyBtnThreeDigitSpecial')">
+                                    <div class="numeric-preview">معاينة: <span id="previewThreeDigitSpecial">---</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnThreeDigitSpecial" onclick="buyNumericId('آيدي ثلاثي مميز', '45$', 'threeDigitSpecial')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- آيدي ثلاثي عادي -->
+                        <div class="id-item">
+                            <h4>آيدي ثلاثي عادي</h4>
+                            <p>مثال: 136, 236, 362</p>
+                            <span class="price">40$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الثلاثي المطلوب:</label>
+                                    <input type="number" id="threeDigitNormal" placeholder="136" min="100" max="999" oninput="updateNumericPreview('threeDigitNormal', 'previewThreeDigitNormal', 'buyBtnThreeDigitNormal')">
+                                    <div class="numeric-preview">معاينة: <span id="previewThreeDigitNormal">---</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnThreeDigitNormal" onclick="buyNumericId('آيدي ثلاثي عادي', '40$', 'threeDigitNormal')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ids-category">
+                        <h3>الآيديات الرباعية</h3>
+                        
+                        <!-- آيدي رباعي مميز مكرر -->
+                        <div class="id-item">
+                            <h4>آيدي رباعي مميز مكرر</h4>
+                            <p>مثال: 1111, 2222, 3333</p>
+                            <span class="price">43$</span>
+                            
+                            <div class="numeric-id-selection">
+                                <div class="numeric-input-group">
+                                    <label>اختر الآيدي الرباعي المكرر:</label>
+                                    <select id="fourDigitRepeated" onchange="updateSpecialPreview('fourDigitRepeated', 'previewFourDigitRepeated', 'buyBtnFourDigitRepeated')">
+                                        <option value="">اختر من القائمة...</option>
+                                        <option value="1111">1111</option>
+                                        <option value="2222">2222</option>
+                                        <option value="3333">3333</option>
+                                        <option value="4444">4444</option>
+                                        <option value="5555">5555</option>
+                                        <option value="6666">6666</option>
+                                        <option value="7777">7777</option>
+                                        <option value="8888">8888</option>
+                                        <option value="9999">9999</option>
+                                    </select>
+                                    <div class="numeric-preview">معاينة: <span id="previewFourDigitRepeated">----</span></div>
+                                </div>
+                                <button class="numeric-buy-btn" id="buyBtnFourDigitRepeated" onclick="buyNumericId('آيدي رباعي مميز مكرر', '43$', 'fourDigitRepeated')" disabled>
+                                    اشتري هذا الآيدي
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- آيدي نيم -->
+        <section id="id-name" class="id-name-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-tag"></i> 💎 ID Name</h2>
+                </div>
+                <div class="id-name-content fade-in">
+                    <div class="id-name-card">
+                        <h3>تغيير آيديك إلى اسم</h3>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> اختيار لون الأسم</li>
+                            <li><i class="fas fa-check"></i> كتابة الأسم بالعربي والإنجليزي</li>
+                            <li><i class="fas fa-check"></i> يحق لك تغيير الاسم مرة في الشهر فقط</li>
+                            <li><i class="fas fa-info-circle"></i> الأسم فقط شكل فوق الرأس</li>
+                            <li><i class="fas fa-info-circle"></i> الانتقال والسجن والخ يكون على الآيدي الأساسي</li>
+                        </ul>
+                        
+                        <!-- نموذج اختيار الآيدي -->
+                        <div class="id-selection-form">
+                            <h4><i class="fas fa-edit"></i> اختر الآيدي المطلوب:</h4>
+                            <div class="id-input-group">
+                                <div class="input-wrapper">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="desiredId" placeholder="اكتب الآيدي بالعربي أو الإنجليزي..." maxlength="20" oninput="updateIdPreview()">
+                                </div>
+                                <div class="character-counter">
+                                    <span id="charCount">0</span>/20 حرف
+                                </div>
+                            </div>
+                            <div class="id-suggestions">
+                                <h5>اقتراحات شائعة:</h5>
+                                <div class="suggestions-list">
+                                    <button class="suggestion-btn" onclick="selectSuggestion('King')">King</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('Legend')">Legend</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('Pro')">Pro</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('Boss')">Boss</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('Hero')">Hero</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('ملك')">ملك</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('أسطورة')">أسطورة</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('بطل')">بطل</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('زعيم')">زعيم</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('King1')">King1</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('ملك2024')">ملك2024</button>
+                                    <button class="suggestion-btn" onclick="selectSuggestion('ProAD')">ProAD</button>
+                                </div>
+                            </div>
+                            <div class="id-preview">
+                                <p><i class="fas fa-eye"></i> معاينة: <span id="idPreview">اكتب الآيدي بالعربي أو الإنجليزي لترى المعاينة</span></p>
+                            </div>
+                            <div class="id-tips">
+                                <h6><i class="fas fa-lightbulb"></i> نصائح:</h6>
+                                <ul>
+                                    <li>يمكن استخدام الأحرف العربية والإنجليزية والأرقام</li>
+                                    <li>لا تستخدم مسافات أو رموز خاصة</li>
+                                    <li>الحد الأقصى 20 حرف</li>
+                                    <li>سيظهر الآيدي فوق رأسك في اللعبة</li>
+                                    <li>يمكنك خلط العربي والإنجليزي مثل: King1 أو ملك2024</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="price-section">
+                            <span class="price">15$</span>
+                            <button class="buy-button" id="idBuyButton" onclick="buyIdWithSelection()" disabled>اضغط هنا للشراء</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم Fall Deluxe -->
+        <section id="fall-deluxe" class="fall-deluxe-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-snowflake"></i> Fall Deluxe</h2>
+                </div>
+                <div class="coming-soon-grid fade-in">
+                    <div class="coming-soon-card">
+                        <h3>🧊 ADH-Deluxe</h3>
+                        <p class="coming-soon">قريبا - SOON</p>
+                    </div>
+                    <div class="coming-soon-card">
+                        <h3>📁 Deluxe-Clients</h3>
+                        <p class="coming-soon">قريبا - SOON</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الباقات الأساسية -->
+        <section id="packages" class="packages-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-box"></i> الباقات الأساسية</h2>
+                </div>
+                <div class="coming-soon-grid fade-in">
+                    <div class="coming-soon-card">
+                        <h3>👑 Titans</h3>
+                        <p class="coming-soon">قريبا - SOON</p>
+                    </div>
+                    <div class="coming-soon-card">
+                        <h3>🎩 Responsible</h3>
+                        <p class="coming-soon">قريبا - SOON</p>
+                    </div>
+                </div>
+                
+                <div class="packages-grid">
+                    <!-- ADH Menu -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/EQ8zDwioif-BgkZg4acCsATDGhusXlk_9mBHqzWP0nU/https/probot.media/FAUdSpPG9S.jpg?format=webp&width=539&height=680" alt="ADH Menu">
+                            <h3>👾 ADH-Menu</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> طيران من خلال زر F2</li>
+                            <li><i class="fas fa-check"></i> القفز العالي</li>
+                            <li><i class="fas fa-check"></i> الركض السريع</li>
+                            <li><i class="fas fa-check"></i> يمكنك تفعيل 6 أنواع دروع</li>
+                            <li><i class="fas fa-check"></i> تفعيل البلبز عن طريق المنيو</li>
+                            <li><i class="fas fa-check"></i> رسبنة سيارات عبر المنيو</li>
+                            <li><i class="fas fa-check"></i> حفظ سيارات عبر المنيو</li>
+                            <li><i class="fas fa-check"></i> تعديل ألوان وسرعة السيارات</li>
+                            <li><i class="fas fa-check"></i> إنشاء لبسك وحفظ الملابس عبر المنيو</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل من خلال المنيو</li>
+                            <li><i class="fas fa-check"></i> رسبنة أسلحة من خلال المنيو</li>
+                            <li><i class="fas fa-check"></i> تعديل خاص للأسلحة من خلال المنيو</li>
+                            <li><i class="fas fa-check"></i> حفظ الأسلحة من خلال المنيو</li>
+                            <li><i class="fas fa-check"></i> تصوير روكستار</li>
+                            <li><i class="fas fa-check"></i> رتبة خاصة في السيرفر</li>
+                            <li><i class="fas fa-check"></i> رتبة خاصة في الديسكورد</li>
+                            <li><i class="fas fa-check"></i> خواص داخل اللعبة (طيران، إنعاش، كلبشة والى آخره)</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">300$</span>
+                            <button class="buy-button" onclick="openPaymentModal('👾 ADH-Menu', '300$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Coming Soon Packages -->
+                    <div class="coming-soon-list fade-in">
+                        <h3>الباقات قريباً</h3>
+                        <ul class="soon-list">
+                            <li>💜 ADH-Special - قريبا SOON</li>
+                            <li>🔫 ADH-KillFeed - قريبا SOON</li>
+                            <li>💖 Red-Ruby - قريبا SOON</li>
+                            <li>💚 Emerald - قريبا SOON</li>
+                            <li>🖤 Dark-Diamond - قريبا SOON</li>
+                            <li>👼 Baby-Plus - قريبا SOON</li>
+                            <li>🍼 Baby-Skins - قريبا SOON</li>
+                        </ul>
+                    </div>
+
+                    <!-- Remote Cinema -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/NO_C1q4BKuPmAxe5ApWzZXtE_IiVSKIRUsjg7XvHDf8/https/probot.media/BeH1gDrUoi.jpg?format=webp&width=513&height=250" alt="Remote Cinema">
+                            <h3>📱 Remote-Cinema</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> خاصية تشغيل السينما بكل شاشات السيرفر</li>
+                            <li><i class="fas fa-check"></i> رتبة خاصة في الديسكورد</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">50$</span>
+                            <button class="buy-button" onclick="openPaymentModal('📱 Remote-Cinema', '50$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- إعلان صوتي -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/CKH-QKZP1vojT9ffCmpRC2IHP6JKyiaQuTe7onkmJ1I/https/probot.media/EaDAb5nu8R.jpg?format=webp&width=800&height=534" alt="إعلان صوتي">
+                            <h3>🎤 اعلان-صوتي</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> اعلان صوتي لمدة 20 ثانية</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">65$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🎤 اعلان-صوتي', '65$')">شراء الآن</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الباقات الحصرية -->
+        <section id="exclusive-packages" class="exclusive-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-crown"></i> الباقات الحصرية</h2>
+                </div>
+                <div class="coming-soon-grid fade-in">
+                    <div class="coming-soon-card">
+                        <h3>👒 One-Piece</h3>
+                        <p class="coming-soon">قريبا SOON</p>
+                    </div>
+                    <div class="coming-soon-card">
+                        <h3>💄 Barbie</h3>
+                        <p class="coming-soon">قريبا SOON</p>
+                    </div>
+                    <div class="coming-soon-card">
+                        <h3>🎭 Anime</h3>
+                        <p class="coming-soon">قريبا SOON</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأبطال -->
+        <section id="heroes" class="heroes-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2><i class="fas fa-mask"></i> الأبطال</h2>
+                </div>
+                <div class="packages-grid">
+                    <!-- Thanos -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/Zj1ui10ZQv8XW7jR-Y1hqd_xe5DU3zqQGL6Rt8_YvaQ/https/probot.media/uUyqLmmcs9.jpg?format=webp&width=1123&height=680" alt="Thanos">
+                            <h3>🔮 Thanos</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> ميزة إغلاق جميع الأنوار أثناء تسجيل الدخول</li>
+                            <li><i class="fas fa-check"></i> تصميم تسجيل دخول خاص 25 ثانية</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 25 ثانية</li>
+                            <li><i class="fas fa-check"></i> ميزة الطيران</li>
+                            <li><i class="fas fa-check"></i> ميزة القفز العالي</li>
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> ميزة سلاح الليزر</li>
+                            <li><i class="fas fa-check"></i> ميزة القوة القصوى</li>
+                            <li><i class="fas fa-check"></i> ميزة انتحال الشخصية</li>
+                            <li><i class="fas fa-check"></i> ميزة الاختفاء</li>
+                            <li><i class="fas fa-check"></i> ميزة التعقب</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> خاصية تعقب أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> 2 سكنات خاصة</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">100$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🔮 Thanos', '100$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Batman -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/qOWL2EsZXOrbFu_kXMIh1Rcj-lr6u4A3XY394620n-o/https/probot.media/tijBi9qTqU.jpg?format=webp&width=600&height=338" alt="Batman">
+                            <h3>🦇 Batman</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> ميزة القفز العالي</li>
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> خاصية تعقب أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 15 ثانية</li>
+                            <li><i class="fas fa-check"></i> سيارات خاصة لباتمان</li>
+                            <li><i class="fas fa-check"></i> طائرة خاصة لباتمان</li>
+                            <li><i class="fas fa-check"></i> 8 سكنات باتمان</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">110$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🦇 Batman', '110$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Joker -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/dzGB0H1aPYQ8J15WZP8tJkzFxW-qc86hGNaevBqm8DY/https/probot.media/e7bS47QeN5.jpg?format=webp&width=1148&height=634" alt="Joker">
+                            <h3>🃏 Joker</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> خاصية انتحال الشخصية</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 15 ثانية</li>
+                            <li><i class="fas fa-check"></i> سيارات خاصة للجوكر</li>
+                            <li><i class="fas fa-check"></i> طائرة خاصة للجوكر</li>
+                            <li><i class="fas fa-check"></i> 5 سكنات للجوكر</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">120$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🃏 Joker', '120$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Punisher -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/mBcvF0uuSuU5GMXIaCHt2EB93fbrXMNtym8g9ldb8gc/https/probot.media/G7BFdE06QG.jpg?format=webp&width=1148&height=646" alt="Punisher">
+                            <h3>🚬 Punisher</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> إغلاق جميع أنوار المدينة أثناء تسجيل الدخول</li>
+                            <li><i class="fas fa-check"></i> القوة القصوى</li>
+                            <li><i class="fas fa-check"></i> خاصية تعقب</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 15 ثانية</li>
+                            <li><i class="fas fa-check"></i> 3 سكنات خاصة</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">90$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🚬 Punisher', '90$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- John Wick -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/DdUS2yoRoGzPoaO4bO9jd9U5C6ogQjsehDWt2jkx0hs/https/probot.media/s5cstiJtot.jpg?format=webp&width=375&height=210" alt="John Wick">
+                            <h3>🪓 John・Wick</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> خاصية انتحال الشخصية</li>
+                            <li><i class="fas fa-check"></i> خاصية تعقب</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 15 ثانية</li>
+                            <li><i class="fas fa-check"></i> سكن خاص</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">80$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🪓 John・Wick', '80$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Harley Quinn -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/XijsYaZjCTQwVRP1x2HgspZKJmcViHD5bghGV7Af2ec/https/probot.media/bROaHVf3m7.jpg?format=webp&width=1088&height=680" alt="Harley Quinn">
+                            <h3>🍷 Harley・Quinn</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> إغلاق جميع أنوار المدينة أثناء تسجيل الدخول</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> سكنات خاص</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">80$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🍷 Harley・Quinn', '80$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Spider-Man -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/rml4EBcLIMqpbXYw6JG8GqPv1G95ijMajjKvCrS7pdE/https/probot.media/c5qR2b9KMD.jpg?format=webp&width=1148&height=645" alt="Spider-Man">
+                            <h3>🕸 Spider・Man</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> تصميم تسجيل دخول خاص 7 ثواني</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 7 ثواني</li>
+                            <li><i class="fas fa-check"></i> ميزة القفز العالي</li>
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> ميزة القوة القصوى</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> 3 سكنات خاصة</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">100$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🕸 Spider・Man', '100$')">شراء الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- Venom -->
+                    <div class="package-card fade-in">
+                        <div class="package-header">
+                            <img src="https://images-ext-1.discordapp.net/external/msgFOCPB5OtgBfunVIaSPdveKbUGunyQblKqxtWCPrs/https/probot.media/MRKeI374lu.jpg?format=webp&width=375&height=210" alt="Venom">
+                            <h3>🎱 Venom</h3>
+                        </div>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check"></i> تصميم تسجيل دخول خاص 7 ثواني</li>
+                            <li><i class="fas fa-check"></i> إعلان صوتي خاص 7 ثواني</li>
+                            <li><i class="fas fa-check"></i> ميزة القفز العالي</li>
+                            <li><i class="fas fa-check"></i> ميزة السرعة الخارقة X2</li>
+                            <li><i class="fas fa-check"></i> ميزة القوة القصوى</li>
+                            <li><i class="fas fa-check"></i> خاصية الكلبشة والسحب</li>
+                            <li><i class="fas fa-check"></i> تعبئة الهيل والدرع</li>
+                            <li><i class="fas fa-check"></i> تعبئة الأكل والشرب</li>
+                            <li><i class="fas fa-check"></i> الرؤية الليلية</li>
+                            <li><i class="fas fa-check"></i> منظار حراري</li>
+                            <li><i class="fas fa-check"></i> أخذ أسلحة</li>
+                            <li><i class="fas fa-check"></i> 2 سكنات خاصة</li>
+                        </ul>
+                        <div class="package-price">
+                            <span class="price">100$</span>
+                            <button class="buy-button" onclick="openPaymentModal('🎱 Venom', '100$')">شراء الآن</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>المتجر الرسمي</h4>
+                    <p>سيرفر أبطال أبوظبي ديسكورد</p>
+                </div>
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <div class="social-links">
+                        <a href="https://discordapp.com/channels/1324554352077307994/1349706292368900096/1367001399556313118" class="discord-link" target="_blank">
+                            <i class="fab fa-discord"></i>
+                            ديسكورد
+                        </a>
+                        <a href="https://t.me/iivoz" class="telegram-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            المطور
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <p>&copy; 2025 جميع الحقوق محفوظة لسيرفر أبطال أبوظبي</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- نافذة الدفع المنبثقة -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> إتمام الشراء</h2>
+                <span class="close" onclick="closePaymentModal()">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="purchase-info">
+                    <h3 id="packageName">اسم الباقة</h3>
+                    <div class="package-price-display">
+                        <span>السعر: </span>
+                        <span id="packagePrice" class="price-highlight">0$</span>
+                    </div>
+                    <div id="selectedIdInfo" class="selected-id-info" style="display: none;">
+                        <p><i class="fas fa-user-tag"></i> الآيدي المحدد: <span id="selectedIdName"></span></p>
+                    </div>
+                </div>
+
+                <div class="payment-methods-modal">
+                    <h3><i class="fas fa-credit-card"></i> طرق الدفع المتاحة</h3>
+                    
+                    <div class="payment-option">
+                        <div class="payment-header">
+                            <img src="https://mahabharti.in/global/wp-content/uploads/2022/01/FAB-Bank-Logo.png" alt="FAB Bank" class="payment-logo">
+                            <h4>FAB Bank</h4>
+                        </div>
+                        <div class="payment-details">
+                            <p class="iban-display">الآيبان: <span id="fabIban">AE79 0355 6400 1140 8360 066</span></p>
+                            <button class="copy-btn" onclick="copyIban()">نسخ الآيبان</button>
+                        </div>
+                    </div>
+
+                    <div class="payment-separator">أو</div>
+
+                    <div class="payment-option">
+                        <div class="payment-header">
+                            <img src="https://logos-world.net/wp-content/uploads/2020/07/PayPal-Logo.png" alt="PayPal" class="payment-logo">
+                            <h4>PayPal</h4>
+                        </div>
+                        <div class="payment-details">
+                            <a href="https://www.paypal.me/BINSHAMLAN1" target="_blank" class="paypal-btn">
+                                <i class="fab fa-paypal"></i>
+                                الدفع عبر PayPal
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="receipt-upload">
+                    <h3><i class="fas fa-receipt"></i> رفع الإيصال</h3>
+                    <p class="upload-instructions">بعد إتمام الدفع، قم برفع الإيصال هنا:</p>
+                    <div class="upload-area">
+                        <input type="file" id="receiptFile" accept="image/*,.pdf" style="display: none;" onchange="handleFileUpload(event)">
+                        <div class="upload-box" onclick="document.getElementById('receiptFile').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>اضغط هنا لرفع الإيصال</p>
+                            <small>PNG, JPG, PDF - حد أقصى 10MB</small>
+                        </div>
+                        <div id="filePreview" class="file-preview" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> تعليمات مهمة</h3>
+                    <ul class="instructions-list">
+                        <li><i class="fas fa-check"></i> بعد الدفع ورفع الإيصال</li>
+                        <li><i class="fas fa-check"></i> افتح تذكرة في الديسكورد</li>
+                        <li><i class="fas fa-check"></i> أرسل الإيصال للإدارة</li>
+                        <li><i class="fas fa-check"></i> انتظر التأكيد والتفعيل</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="discord-btn" onclick="openDiscordTicket()">
+                        <i class="fab fa-discord"></i>
+                        فتح تذكرة الديسكورد
+                    </button>
+                    <button class="submit-btn" onclick="submitPurchase()" id="submitBtn" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال طلب الشراء
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript للتأثيرات -->
+    <script>
+        // Sticky Header
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // حساب السعر بعد تطبيق الخصم
+        function calculateDiscountPrice(originalPrice, discount) {
+            const numericPrice = parseFloat(originalPrice.replace(/[^\d.]/g, ''));
+            if (isNaN(numericPrice) || discount <= 0) {
+                return {
+                    finalPrice: originalPrice,
+                    discountAmount: 0,
+                    originalPrice: originalPrice,
+                    hasDiscount: false
+                };
+            }
+            
+            const discountAmount = (numericPrice * discount) / 100;
+            const finalPrice = numericPrice - discountAmount;
+            
+            return {
+                finalPrice: `${finalPrice.toFixed(0)}$`,
+                discountAmount: `${discountAmount.toFixed(0)}$`,
+                originalPrice: originalPrice,
+                hasDiscount: true,
+                discountPercent: discount
+            };
+        }
+
+        // وظائف النافذة المنبثقة للدفع
+        function openPaymentModal(packageName, packagePrice) {
+            // حساب السعر بعد الخصم إذا كان المستخدم مسجل دخول ولديه خصم
+            let priceInfo = { finalPrice: packagePrice, hasDiscount: false };
+            
+            if (currentUser && currentUser.discount > 0) {
+                priceInfo = calculateDiscountPrice(packagePrice, currentUser.discount);
+            }
+            
+            document.getElementById('packageName').textContent = packageName;
+            document.getElementById('packagePrice').innerHTML = createPriceDisplay(priceInfo);
+            
+            // إخفاء معلومات الآيدي للباقات العادية
+            document.getElementById('selectedIdInfo').style.display = 'none';
+            
+            document.getElementById('paymentModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إنشاء عرض السعر مع الخصم
+        function createPriceDisplay(priceInfo) {
+            if (!priceInfo.hasDiscount) {
+                return priceInfo.finalPrice;
+            }
+            
+            return `
+                <div class="price-display">
+                    <span class="original-price">${priceInfo.originalPrice}</span>
+                    <span class="final-price">${priceInfo.finalPrice}</span>
+                    <div class="discount-info">
+                        <span class="discount-badge">خصم ${priceInfo.discountPercent}%</span>
+                        <span class="saved-amount">توفير ${priceInfo.discountAmount}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // إعادة تعيين النموذج
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('receiptFile').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+            document.getElementById('selectedIdInfo').style.display = 'none';
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> إرسال طلب الشراء';
+        }
+
+        // نسخ الآيبان
+        function copyIban() {
+            const ibanText = document.getElementById('fabIban').textContent;
+            navigator.clipboard.writeText(ibanText).then(() => {
+                // تغيير النص مؤقتاً لإظهار أنه تم النسخ
+                const copyBtn = event.target;
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'تم النسخ!';
+                copyBtn.style.backgroundColor = '#28a745';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.backgroundColor = '';
+                }, 2000);
+            }).catch(() => {
+                alert('تم نسخ الآيبان: ' + ibanText);
+            });
+        }
+
+        // التعامل مع رفع الملف
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('filePreview');
+            
+            if (file) {
+                // التحقق من حجم الملف (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('حجم الملف كبير جداً. الحد الأقصى 10MB');
+                    return;
+                }
+
+                const fileName = file.name;
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                
+                preview.innerHTML = `
+                    <div class="file-info">
+                        <i class="fas fa-file-alt"></i>
+                        <div class="file-details">
+                            <p class="file-name">${fileName}</p>
+                            <p class="file-size">${fileSize} MB</p>
+                        </div>
+                        <button class="remove-file" onclick="removeFile()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                
+                preview.style.display = 'block';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        // إزالة الملف
+        function removeFile() {
+            document.getElementById('receiptFile').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+            document.getElementById('submitBtn').disabled = true;
+        }
+
+        // إرسال طلب الشراء
+        function submitPurchase() {
+            const packageName = document.getElementById('packageName').textContent;
+            const packagePrice = document.getElementById('packagePrice').textContent;
+            const file = document.getElementById('receiptFile').files[0];
+            const selectedIdInfo = document.getElementById('selectedIdInfo');
+            const selectedId = selectedIdInfo.style.display !== 'none' ? 
+                              document.getElementById('selectedIdName').textContent : null;
+            
+            if (!file) {
+                alert('يرجى رفع إيصال الدفع أولاً');
+                return;
+            }
+
+            // تغيير حالة الزر
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحضير...';
+
+            // تحضير الرسالة
+            let discordMessage = `🛒 **طلب شراء جديد**\n\n`;
+            discordMessage += `📦 **المنتج:** ${packageName}\n`;
+            discordMessage += `💰 **السعر:** ${packagePrice}\n`;
+            
+            if (selectedId) {
+                discordMessage += `🏷️ **الآيدي المطلوب:** ${selectedId}\n`;
+            }
+            
+            discordMessage += `📅 **تاريخ الطلب:** ${new Date().toLocaleString('ar-SA')}\n`;
+            discordMessage += `📁 **الإيصال:** مرفق أسفل هذه الرسالة\n\n`;
+            discordMessage += `✅ **حالة الطلب:** في انتظار المراجعة\n`;
+            discordMessage += `⏰ **يرجى انتظار الرد من الإدارة**`;
+
+            // نسخ الرسالة للحافظة
+            navigator.clipboard.writeText(discordMessage).then(() => {
+                setTimeout(() => {
+                    submitBtn.innerHTML = '<i class="fas fa-discord"></i> فتح الديسكورد';
+                    submitBtn.style.backgroundColor = '#7289da';
+                    
+                    // فتح رابط الديسكورد
+                    window.open('https://discordapp.com/channels/1324554352077307994/1349706292368900096/1367001399556313118', '_blank');
+                    
+                    setTimeout(() => {
+                        // إظهار التعليمات
+                        showDiscordInstructions(packageName, selectedId, file.name);
+                    }, 500);
+                }, 1500);
+            }).catch(() => {
+                // إذا فشل النسخ، اعرض الرسالة في نافذة
+                setTimeout(() => {
+                    submitBtn.innerHTML = '<i class="fas fa-discord"></i> فتح الديسكورد';
+                    submitBtn.style.backgroundColor = '#7289da';
+                    
+                    showDiscordMessage(discordMessage, packageName, selectedId, file.name);
+                }, 1500);
+            });
+        }
+
+        // إظهار تعليمات الديسكورد
+        function showDiscordInstructions(packageName, selectedId, fileName) {
+            const instructionModal = document.createElement('div');
+            instructionModal.className = 'instruction-modal';
+            instructionModal.innerHTML = `
+                <div class="instruction-content">
+                    <div class="instruction-header">
+                        <h2><i class="fab fa-discord"></i> تم فتح الديسكورد!</h2>
+                        <span class="instruction-close" onclick="closeInstructionModal()">&times;</span>
+                    </div>
+                    <div class="instruction-body">
+                        <div class="success-animation">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>تم تحضير طلبك بنجاح!</h3>
+                        </div>
+                        
+                        <div class="next-steps">
+                            <h4><i class="fas fa-list-ol"></i> الخطوات التالية:</h4>
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-text">
+                                    <strong>انسخ الرسالة</strong> - تم نسخها تلقائياً للحافظة
+                                    <button class="copy-message-btn" onclick="copyDiscordMessage()">
+                                        <i class="fas fa-copy"></i> نسخ الرسالة مرة أخرى
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-text">
+                                    <strong>الصق الرسالة</strong> في تذكرة الديسكورد المفتوحة
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-text">
+                                    <strong>أرفق الإيصال</strong> (${fileName}) من هاتفك/حاسوبك
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-text">
+                                    <strong>اضغط إرسال</strong> وانتظر رد الإدارة
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="purchase-summary">
+                            <h4><i class="fas fa-receipt"></i> ملخص الطلب:</h4>
+                            <div class="summary-item">📦 المنتج: <span>${packageName}</span></div>
+                            ${selectedId ? `<div class="summary-item">🏷️ الآيدي: <span>${selectedId}</span></div>` : ''}
+                            <div class="summary-item">📁 الإيصال: <span>${fileName}</span></div>
+                        </div>
+                        
+                        <div class="action-buttons-instruction">
+                            <button class="reopen-discord-btn" onclick="reopenDiscord()">
+                                <i class="fab fa-discord"></i> إعادة فتح الديسكورد
+                            </button>
+                            <button class="close-instruction-btn" onclick="closeInstructionModal()">
+                                <i class="fas fa-times"></i> إغلاق
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(instructionModal);
+            instructionModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق النافذة عند النقر خارجها
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                closePaymentModal();
+            }
+        });
+
+        // إغلاق النافذة بمفتاح Escape
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closePaymentModal();
+            }
+        });
+
+        // وظائف نموذج اختيار الآيدي
+        function updateIdPreview() {
+            const input = document.getElementById('desiredId');
+            const preview = document.getElementById('idPreview');
+            const charCount = document.getElementById('charCount');
+            const buyButton = document.getElementById('idBuyButton');
+            
+            let value = input.value.trim();
+            
+            // إزالة الرموز غير المسموحة (أحرف عربية وإنجليزية وأرقام فقط)
+            value = value.replace(/[^a-zA-Z0-9\u0600-\u06FF\u0750-\u077F]/g, '');
+            input.value = value;
+            
+            charCount.textContent = value.length;
+            
+            // تحديث لون العداد
+            if (value.length > 15) {
+                charCount.style.color = '#ffc107';
+            } else {
+                charCount.style.color = '#99aab5';
+            }
+            
+            if (value.length > 0) {
+                preview.textContent = value;
+                buyButton.disabled = false;
+                buyButton.textContent = 'اشتري الآيدي: ' + value;
+                buyButton.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            } else {
+                preview.textContent = 'اكتب الآيدي بالعربي أو الإنجليزي لترى المعاينة';
+                buyButton.disabled = true;
+                buyButton.textContent = 'اضغط هنا للشراء';
+                buyButton.style.background = '#6c757d';
+            }
+        }
+
+        function selectSuggestion(suggestion) {
+            const input = document.getElementById('desiredId');
+            input.value = suggestion;
+            updateIdPreview();
+            
+            // تأثير بصري للزر المضغوط
+            event.target.style.background = 'rgba(40, 167, 69, 0.3)';
+            event.target.style.color = '#28a745';
+            
+            setTimeout(() => {
+                event.target.style.background = '';
+                event.target.style.color = '';
+            }, 500);
+        }
+
+        function buyIdWithSelection() {
+            const selectedId = document.getElementById('desiredId').value.trim();
+            
+            if (!selectedId) {
+                alert('يرجى اختيار الآيدي المطلوب أولاً');
+                return;
+            }
+            
+            // فتح نافذة الدفع مع الآيدي المحدد
+            openPaymentModalWithId('💎 ID Name', '15$', selectedId);
+        }
+
+        // نافذة الدفع مع معلومات الآيدي
+        function openPaymentModalWithId(packageName, packagePrice, selectedId) {
+            // حساب السعر بعد الخصم إذا كان المستخدم مسجل دخول ولديه خصم
+            let priceInfo = { finalPrice: packagePrice, hasDiscount: false };
+            
+            if (currentUser && currentUser.discount > 0) {
+                priceInfo = calculateDiscountPrice(packagePrice, currentUser.discount);
+            }
+            
+            document.getElementById('packageName').textContent = packageName;
+            document.getElementById('packagePrice').innerHTML = createPriceDisplay(priceInfo);
+            
+            // عرض معلومات الآيدي المحدد
+            const idInfo = document.getElementById('selectedIdInfo');
+            const idName = document.getElementById('selectedIdName');
+            
+            if (selectedId) {
+                idName.textContent = selectedId;
+                idInfo.style.display = 'block';
+            } else {
+                idInfo.style.display = 'none';
+            }
+            
+            document.getElementById('paymentModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // متغير عام لحفظ رسالة الديسكورد
+        let savedDiscordMessage = '';
+
+        // عرض رسالة الديسكورد في حالة فشل النسخ
+        function showDiscordMessage(message, packageName, selectedId, fileName) {
+            savedDiscordMessage = message;
+            showDiscordInstructions(packageName, selectedId, fileName);
+        }
+
+        // نسخ رسالة الديسكورد
+        function copyDiscordMessage() {
+            const packageName = document.getElementById('packageName').textContent;
+            const packagePrice = document.getElementById('packagePrice').textContent;
+            const selectedIdInfo = document.getElementById('selectedIdInfo');
+            const selectedId = selectedIdInfo.style.display !== 'none' ? 
+                              document.getElementById('selectedIdName').textContent : null;
+            
+            let discordMessage = `🛒 **طلب شراء جديد**\n\n`;
+            discordMessage += `📦 **المنتج:** ${packageName}\n`;
+            discordMessage += `💰 **السعر:** ${packagePrice}\n`;
+            
+            if (selectedId) {
+                discordMessage += `🏷️ **الآيدي المطلوب:** ${selectedId}\n`;
+            }
+            
+            discordMessage += `📅 **تاريخ الطلب:** ${new Date().toLocaleString('ar-SA')}\n`;
+            discordMessage += `📁 **الإيصال:** مرفق أسفل هذه الرسالة\n\n`;
+            discordMessage += `✅ **حالة الطلب:** في انتظار المراجعة\n`;
+            discordMessage += `⏰ **يرجى انتظار الرد من الإدارة**`;
+
+            navigator.clipboard.writeText(discordMessage).then(() => {
+                const copyBtn = document.querySelector('.copy-message-btn');
+                if (copyBtn) {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+                    copyBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.style.background = '';
+                    }, 2000);
+                }
+            }).catch(() => {
+                alert('تعذر النسخ التلقائي. الرسالة:\n\n' + discordMessage);
+            });
+        }
+
+        // إعادة فتح الديسكورد
+        function reopenDiscord() {
+            window.open('https://discordapp.com/channels/1324554352077307994/1349706292368900096/1367001399556313118', '_blank');
+        }
+
+        // إغلاق نافذة التعليمات
+        function closeInstructionModal() {
+            const modal = document.querySelector('.instruction-modal');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = 'auto';
+                closePaymentModal(); // إغلاق نافذة الدفع أيضاً
+            }
+        }
+
+        // فتح تذكرة الديسكورد
+        function openDiscordTicket() {
+            window.open('https://discordapp.com/channels/1324554352077307994/1349706292368900096/1367001399556313118', '_blank');
+        }
+
+        // وظائف الآيديات الرقمية
+        function updateNumericPreview(inputId, previewId, buttonId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const button = document.getElementById(buttonId);
+            
+            let value = input.value;
+            
+            // التحقق من صحة القيمة حسب نوع الآيدي
+            let isValid = false;
+            
+            if (inputId.includes('two') && value >= 10 && value <= 99) {
+                isValid = true;
+            } else if (inputId.includes('three') && value >= 100 && value <= 999) {
+                isValid = true;
+            } else if (inputId.includes('four') && value >= 1000 && value <= 9999) {
+                isValid = true;
+            }
+            
+            if (value && isValid) {
+                preview.textContent = value;
+                button.disabled = false;
+                button.textContent = `اشتري الآيدي: ${value}`;
+                button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                input.style.borderColor = 'rgba(40, 167, 69, 0.6)';
+            } else {
+                preview.textContent = inputId.includes('two') ? '--' : 
+                                    inputId.includes('three') ? '---' : '----';
+                button.disabled = true;
+                button.textContent = 'اشتري هذا الآيدي';
+                button.style.background = '#6c757d';
+                input.style.borderColor = value ? 'rgba(220, 53, 69, 0.6)' : 'rgba(114, 137, 218, 0.3)';
+            }
+        }
+
+        function updateSpecialPreview(selectId, previewId, buttonId) {
+            const select = document.getElementById(selectId);
+            const preview = document.getElementById(previewId);
+            const button = document.getElementById(buttonId);
+            
+            const value = select.value;
+            
+            if (value) {
+                preview.textContent = value;
+                button.disabled = false;
+                button.textContent = `اشتري الآيدي: ${value}`;
+                button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                select.style.borderColor = 'rgba(40, 167, 69, 0.6)';
+            } else {
+                preview.textContent = selectId.includes('two') ? '--' :
+                                    selectId.includes('three') ? '---' : '----';
+                button.disabled = true;
+                button.textContent = 'اشتري هذا الآيدي';
+                button.style.background = '#6c757d';
+                select.style.borderColor = 'rgba(114, 137, 218, 0.3)';
+            }
+        }
+
+        function buyNumericId(idType, price, inputId) {
+            const input = document.getElementById(inputId);
+            const selectedId = input.tagName === 'SELECT' ? 
+                              input.options[input.selectedIndex].value : 
+                              input.value;
+            
+            if (!selectedId) {
+                alert('يرجى اختيار الآيدي المطلوب أولاً');
+                return;
+            }
+            
+            // فتح نافذة الدفع مع معلومات الآيدي الرقمي
+            openPaymentModalWithId(`${idType} - ${selectedId}`, price, selectedId);
+        }
+
+        // نظام إدارة المستخدمين والرتب
+        let currentUser = null;
+        
+        // بيانات المستخدمين (محاكاة)
+        const mockUsers = {
+            'owner': {
+                id: '1',
+                username: 'المالك الرئيسي',
+                role: 'owner',
+                avatar: 'https://i.ibb.co/99mqbZ9P/512.png',
+                permissions: ['all']
+            },
+            'admin': {
+                id: '2',
+                username: 'المدير العام',
+                role: 'admin',
+                avatar: 'https://cdn.discordapp.com/embed/avatars/1.png',
+                permissions: ['manage_orders', 'manage_users', 'view_analytics']
+            },
+            'staff': {
+                id: '3',
+                username: 'موظف الدعم',
+                role: 'staff',
+                avatar: 'https://cdn.discordapp.com/embed/avatars/2.png',
+                permissions: ['manage_orders', 'view_analytics']
+            },
+            'vip': {
+                id: '4',
+                username: 'عضو VIP',
+                role: 'vip',
+                avatar: 'https://cdn.discordapp.com/embed/avatars/3.png',
+                permissions: ['priority_support', 'special_offers']
+            },
+            'member': {
+                id: '5',
+                username: 'عضو عادي',
+                role: 'member',
+                avatar: 'https://cdn.discordapp.com/embed/avatars/4.png',
+                permissions: ['purchase_only']
+            }
+        };
+
+        // تحديد أسماء وألوان الرتب
+        const roleData = {
+            'owner': { name: '👑 المالك', color: '#ff6b35', bgColor: 'rgba(255, 107, 53, 0.1)' },
+            'admin': { name: '⚡ مدير عام', color: '#ff3838', bgColor: 'rgba(255, 56, 56, 0.1)' },
+            'moderator': { name: '🛡️ مشرف', color: '#ff9500', bgColor: 'rgba(255, 149, 0, 0.1)' },
+            'staff': { name: '🎯 موظف', color: '#00d4ff', bgColor: 'rgba(0, 212, 255, 0.1)' },
+            'vip': { name: '💎 VIP', color: '#9c27b0', bgColor: 'rgba(156, 39, 176, 0.1)' },
+            'member': { name: '👤 عضو', color: '#99aab5', bgColor: 'rgba(153, 170, 181, 0.1)' }
+        };
+
+        // فحص حالة تسجيل الدخول عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            // فحص إذا كان هناك رد من الديسكورد أولاً
+            handleDiscordCallback();
+            // ثم فحص حالة تسجيل الدخول العادية
+            setTimeout(() => {
+                checkLoginStatus();
+            }, 1000);
+        });
+
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainContent();
+            } else {
+                showLoginModal();
+            }
+        }
+
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('header').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('userStatusBar').style.display = 'none';
+            document.getElementById('admin').style.display = 'none';
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function showMainContent() {
+            hideLoginModal();
+            document.getElementById('header').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('userStatusBar').style.display = 'block';
+            document.getElementById('siteFooter').style.display = 'block';
+            
+            updateUserInterface();
+        }
+
+        function updateUserInterface() {
+            if (!currentUser) return;
+
+            // تحديث شريط الحالة
+            const username = document.getElementById('displayUsername');
+            const userRole = document.getElementById('displayUserRole');
+            const avatar = document.getElementById('userAvatar');
+            const roleBadge = document.getElementById('roleBadge');
+            
+            username.textContent = currentUser.username;
+            userRole.textContent = roleData[currentUser.role].name;
+            avatar.src = currentUser.avatar;
+            
+            // تحديث شارة الرتبة
+            const roleInfo = roleData[currentUser.role];
+            roleBadge.textContent = roleInfo.name;
+            roleBadge.style.background = roleInfo.bgColor;
+            roleBadge.style.color = roleInfo.color;
+            roleBadge.style.border = `1px solid ${roleInfo.color}`;
+
+            // إظهار لوحة التحكم للإدارة
+            if (['owner', 'admin', 'moderator', 'staff'].includes(currentUser.role)) {
+                document.getElementById('adminLink').style.display = 'inline-block';
+                
+                // إظهار المميزات الخاصة بالمالك فقط
+                if (currentUser.role === 'owner') {
+                    document.querySelectorAll('.owner-only').forEach(el => {
+                        el.style.display = 'block';
+                    });
+                }
+            }
+
+            // مميزات خاصة لـ VIP
+            if (currentUser.role === 'vip') {
+                // إضافة خصومات أو مميزات للـ VIP
+                addVipFeatures();
+            }
+        }
+
+        // إضافة مميزات VIP
+        function addVipFeatures() {
+            // إضافة رسالة ترحيب خاصة للـ VIP
+            const heroDescription = document.querySelector('.hero-description');
+            if (heroDescription && !heroDescription.querySelector('.vip-welcome')) {
+                const vipWelcome = document.createElement('div');
+                vipWelcome.className = 'vip-welcome';
+                
+                // تحديد نص الخصم
+                const discountText = currentUser.discount > 0 ? 
+                    `${currentUser.discountDescription} على جميع المشتريات` : 
+                    'خصم خاص على المشتريات';
+                
+                // تحديد لون الخلفية حسب نسبة الخصم
+                const bgColor = getDiscountColor(currentUser.discount);
+                
+                vipWelcome.innerHTML = `
+                    <p style="background: ${bgColor.bg}; color: ${bgColor.text}; padding: 15px; border-radius: 10px; margin-top: 15px; border: 1px solid ${bgColor.border};">
+                        <i class="fas fa-crown" style="margin-left: 8px;"></i>
+                        مرحباً بعضو VIP! تتمتع بـ ${discountText} وأولوية في الدعم الفني
+                        ${currentUser.discount >= 15 ? '<br><i class="fas fa-star" style="margin-left: 5px;"></i>عضوية VIP متميزة!' : ''}
+                    </p>
+                `;
+                heroDescription.parentNode.appendChild(vipWelcome);
+            }
+        }
+
+        // تحديد ألوان الخصم حسب النسبة
+        function getDiscountColor(discount) {
+            if (discount >= 20) {
+                return {
+                    bg: 'rgba(255, 215, 0, 0.2)',
+                    text: '#ffd700',
+                    border: 'rgba(255, 215, 0, 0.4)'
+                }; // ذهبي للخصم العالي
+            } else if (discount >= 15) {
+                return {
+                    bg: 'rgba(138, 43, 226, 0.2)',
+                    text: '#8a2be2',
+                    border: 'rgba(138, 43, 226, 0.4)'
+                }; // بنفسجي للخصم المتوسط
+            } else if (discount >= 10) {
+                return {
+                    bg: 'rgba(156, 39, 176, 0.2)',
+                    text: '#9c27b0',
+                    border: 'rgba(156, 39, 176, 0.3)'
+                }; // البنفسجي الأصلي
+            } else if (discount > 0) {
+                return {
+                    bg: 'rgba(114, 137, 218, 0.2)',
+                    text: '#7289da',
+                    border: 'rgba(114, 137, 218, 0.3)'
+                }; // أزرق للخصم البسيط
+            } else {
+                return {
+                    bg: 'rgba(156, 39, 176, 0.2)',
+                    text: '#9c27b0',
+                    border: 'rgba(156, 39, 176, 0.3)'
+                }; // افتراضي
+            }
+        }
+
+        // رسالة ترحيب متطورة
+        function showWelcomeMessage(username, roleName) {
+            const welcomeModal = document.createElement('div');
+            welcomeModal.className = 'welcome-notification';
+            welcomeModal.innerHTML = `
+                <div class="welcome-content">
+                    <div class="welcome-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="welcome-text">
+                        <h3>مرحباً ${username}!</h3>
+                        <p>تم تسجيل دخولك بنجاح كـ ${roleName}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(welcomeModal);
+            
+            // إظهار التنبيه
+            setTimeout(() => {
+                welcomeModal.style.opacity = '1';
+                welcomeModal.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // إخفاء التنبيه تلقائياً
+            setTimeout(() => {
+                welcomeModal.style.opacity = '0';
+                welcomeModal.style.transform = 'translateY(-20px)';
+                setTimeout(() => welcomeModal.remove(), 300);
+            }, 3000);
+        }
+
+        // مفاتيح الرتب مع أكواد خصم خاصة (في الإنتاج الحقيقي يجب حفظها في قاعدة البيانات مشفرة)
+        const adminKeys = {
+            // مفاتيح VIP مع نسب خصم مختلفة
+            'vip': [
+                { code: 'vip1', discount: 5, description: 'خصم 5%' },
+                { code: 'vip2', discount: 10, description: 'خصم 10%' },
+                { code: 'vip3', discount: 15, description: 'خصم 15%' },
+                { code: 'vip4', discount: 20, description: 'خصم 20%' }
+            ],
+            
+            // مفاتيح الإدارة (خصم ثابت 25%)
+            'staff': [
+                'staff_abd_1', 'staff_abd_2', 'staff_abd_3', 'staff_abd_4'
+            ],
+            'moderator': [
+                'mod_heroes_1', 'mod_heroes_2', 'mod_heroes_3', 'mod_heroes_4'
+            ],
+            'admin': [
+                'admin_abd_heroes_1', 'admin_abd_heroes_2', 'admin_abd_heroes_3', 'admin_abd_heroes_4'
+            ],
+            'owner': [
+                'owner_abd_ultimate_1', 'owner_abd_ultimate_2'
+            ]
+        };
+
+        // تبديل عرض قسم تسجيل دخول الإدارة
+        function toggleAdminLogin() {
+            const adminSection = document.querySelector('.admin-login-section');
+            const toggleBtn = document.querySelector('.toggle-admin-btn');
+            
+            if (adminSection.style.display === 'none') {
+                adminSection.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> إخفاء تسجيل دخول الإدارة';
+                toggleBtn.classList.add('active');
+            } else {
+                adminSection.style.display = 'none';
+                toggleBtn.innerHTML = '<i class="fas fa-key"></i> تسجيل دخول إدارة';
+                toggleBtn.classList.remove('active');
+            }
+        }
+
+        // تسجيل دخول يدوي مع التحقق
+        function manualLogin() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const roleSelect = document.getElementById('roleSelect');
+            const adminKeyInput = document.getElementById('adminKeyInput');
+            
+            if (!username) {
+                alert('يرجى إدخال اسم المستخدم');
+                return;
+            }
+
+            // تحديد الرتبة
+            let selectedRole = 'member'; // الرتبة الافتراضية
+            let needsAdminKey = false;
+
+            // فحص إذا كان قسم الإدارة ظاهر
+            const adminSection = document.querySelector('.admin-login-section');
+            if (adminSection.style.display === 'block') {
+                selectedRole = roleSelect.value || 'member';
+                needsAdminKey = ['vip', 'staff', 'moderator', 'admin', 'owner'].includes(selectedRole);
+            }
+
+            // التحقق من مفتاح الإدارة للرتب العليا
+            let userDiscount = 0;
+            let discountDescription = '';
+            
+            if (needsAdminKey) {
+                const enteredKey = adminKeyInput.value.trim();
+                const roleKeys = adminKeys[selectedRole];
+                
+                if (!enteredKey) {
+                    alert(`يرجى إدخال مفتاح رتبة ${roleData[selectedRole].name}`);
+                    return;
+                }
+                
+                let keyValid = false;
+                
+                // التحقق من مفاتيح VIP مع خصومات مختلفة
+                if (selectedRole === 'vip' && Array.isArray(roleKeys)) {
+                    const vipKey = roleKeys.find(key => key.code === enteredKey);
+                    if (vipKey) {
+                        keyValid = true;
+                        userDiscount = vipKey.discount;
+                        discountDescription = vipKey.description;
+                    }
+                }
+                // التحقق من مفاتيح الإدارة العادية
+                else if (Array.isArray(roleKeys)) {
+                    if (roleKeys.includes(enteredKey)) {
+                        keyValid = true;
+                        userDiscount = ['staff', 'moderator', 'admin', 'owner'].includes(selectedRole) ? 25 : 10;
+                        discountDescription = `خصم ${userDiscount}% إداري`;
+                    }
+                }
+                
+                if (!keyValid) {
+                    alert('مفتاح الرتبة غير صحيح!');
+                    // محو المفتاح المدخل
+                    adminKeyInput.value = '';
+                    return;
+                }
+            }
+
+            // إنشاء مستخدم مؤقت
+            currentUser = {
+                id: Date.now().toString(),
+                username: username,
+                role: selectedRole,
+                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=7289da&color=fff&size=128`,
+                permissions: mockUsers[selectedRole]?.permissions || ['purchase_only'],
+                isFromDiscord: false,
+                loginMethod: needsAdminKey ? 'admin_key' : 'guest',
+                discount: userDiscount,
+                discountDescription: discountDescription,
+                adminKey: needsAdminKey ? adminKeyInput.value.trim() : null
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showMainContent();
+            
+            // رسالة ترحيب مخصصة
+            setTimeout(() => {
+                showWelcomeMessage(currentUser.username, roleData[currentUser.role].name);
+            }, 500);
+        }
+
+        // تسجيل دخول بالديسكورد الحقيقي
+        function loginWithDiscord() {
+            // معلومات التطبيق (يجب إنشاؤها في Discord Developer Portal)
+            const discordConfig = {
+                clientId: 'YOUR_DISCORD_CLIENT_ID', // يجب استبداله بـ Client ID الحقيقي
+                redirectUri: encodeURIComponent(window.location.origin),
+                scope: 'identify%20guilds.members.read',
+                serverId: '1324554352077307994' // ID السيرفر المستخرج من الرابط
+            };
+            
+            // URL تسجيل الدخول بالديسكورد
+            const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${discordConfig.clientId}&redirect_uri=${discordConfig.redirectUri}&response_type=code&scope=${discordConfig.scope}`;
+            
+            // فتح نافذة منبثقة للمصادقة
+            const authWindow = window.open(
+                discordAuthUrl,
+                'discord-auth',
+                'width=500,height=700,scrollbars=yes,resizable=yes'
+            );
+            
+            // رسالة توضيحية مؤقتة
+            showDiscordSetupInstructions();
+        }
+
+        // عرض تعليمات إعداد الديسكورد
+        function showDiscordSetupInstructions() {
+            const instructionsModal = document.createElement('div');
+            instructionsModal.className = 'discord-instructions-modal';
+            instructionsModal.innerHTML = `
+                <div class="discord-instructions-content">
+                    <div class="instructions-header">
+                        <i class="fab fa-discord"></i>
+                        <h2>إعداد مصادقة الديسكورد</h2>
+                    </div>
+                    
+                    <div class="instructions-body">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>إنشاء تطبيق ديسكورد</h3>
+                                <p>اذهب إلى <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a></p>
+                                <p>وأنشئ تطبيق جديد للمتجر</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>إعداد OAuth2</h3>
+                                <p>أضف عنوان الإعادة التوجيه:</p>
+                                <code>${window.location.origin}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>ادخل إلى السيرفر</h3>
+                                <p>تأكد من انضمامك لسيرفر الديسكورد:</p>
+                                <a href="https://discord.gg/Bty6gpqt" target="_blank" class="discord-join-btn">
+                                    <i class="fab fa-discord"></i>
+                                    الانضمام لسيرفر أبطال أبوظبي
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card demo-alternative">
+                            <div class="step-number">💡</div>
+                            <div class="step-content">
+                                <h3>للدخول الآن</h3>
+                                <p>استخدم الدخول المؤقت أسفل الصفحة</p>
+                                <p style="font-size: 0.85rem; color: #99aab5;">الرتبة الافتراضية: Member للجميع</p>
+                                <button class="demo-login-btn" onclick="closeDemoInstructions()">
+                                    <i class="fas fa-user"></i>
+                                    الدخول المؤقت
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="instructions-footer">
+                        <button class="close-instructions-btn" onclick="closeDemoInstructions()">
+                            <i class="fas fa-times"></i>
+                            إغلاق
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(instructionsModal);
+        }
+
+        // إغلاق تعليمات الإعداد
+        function closeDemoInstructions() {
+            const modal = document.querySelector('.discord-instructions-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // محاولة الحصول على معلومات المستخدم من رمز الإذن
+        function handleDiscordCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                // إرسال الرمز للخادم للحصول على معلومات المستخدم
+                exchangeCodeForToken(code);
+            }
+        }
+
+        // تبديل الرمز بمعلومات المستخدم (محاكاة)
+        async function exchangeCodeForToken(code) {
+            try {
+                // في التطبيق الحقيقي، هذا سيتم عبر الخادم
+                showDiscordLoginSuccess();
+            } catch (error) {
+                console.error('خطأ في المصادقة:', error);
+                alert('حدث خطأ في تسجيل الدخول بالديسكورد');
+            }
+        }
+
+        // تطابق أدوار الديسكورد مع رتب المتجر
+        function mapDiscordRolesToStoreRole(discordRoles) {
+            // خريطة أدوار الديسكورد (IDs حقيقية من السيرفر)
+            const roleMapping = {
+                // أدوار الإدارة
+                'owner_role_id': 'owner',
+                'admin_role_id': 'admin', 
+                'moderator_role_id': 'moderator',
+                'staff_role_id': 'staff',
+                
+                // أدوار الأعضاء
+                'vip_role_id': 'vip',
+                'premium_role_id': 'vip',
+                
+                // الرتبة الافتراضية
+                'default': 'member'
+            };
+
+            // فحص الأدوار بالأولوية (من الأعلى للأقل)
+            const priorityOrder = ['owner', 'admin', 'moderator', 'staff', 'vip'];
+            
+            for (let role of priorityOrder) {
+                const roleId = Object.keys(roleMapping).find(key => roleMapping[key] === role);
+                if (discordRoles && discordRoles.includes(roleId)) {
+                    return role;
+                }
+            }
+            
+            return 'member'; // الرتبة الافتراضية
+        }
+
+        // عرض نجاح تسجيل الدخول بالديسكورد
+        function showDiscordLoginSuccess(userData = null) {
+            // في التطبيق الحقيقي، userData ستأتي من Discord API
+            const mockDiscordUser = userData || {
+                id: '123456789',
+                username: 'DiscordUser#1234',
+                discriminator: '1234',
+                avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
+                roles: [], // أدوار المستخدم في السيرفر
+                isFromDiscord: true
+            };
+
+            // تحديد الرتبة بناءً على أدوار الديسكورد
+            const storeRole = mapDiscordRolesToStoreRole(mockDiscordUser.roles);
+            
+            currentUser = {
+                id: mockDiscordUser.id,
+                username: `${mockDiscordUser.username}#${mockDiscordUser.discriminator}`,
+                role: storeRole,
+                avatar: mockDiscordUser.avatar,
+                permissions: mockUsers[storeRole]?.permissions || ['purchase_only'],
+                isFromDiscord: true,
+                discordId: mockDiscordUser.id
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // إغلاق نافذة التعليمات إذا كانت مفتوحة
+            closeDemoInstructions();
+            
+            showMainContent();
+            showWelcomeMessage(currentUser.username, roleData[currentUser.role].name);
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                showLoginModal();
+            }
+        }
+
+        // عرض قسم لوحة التحكم
+        function showAdminPanel() {
+            if (!['owner', 'admin', 'moderator', 'staff'].includes(currentUser?.role)) {
+                alert('ليس لديك صلاحية للوصول إلى لوحة التحكم');
+                return;
+            }
+            
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('admin').style.display = 'block';
+            
+            loadAdminData();
+        }
+
+        // تحميل بيانات لوحة التحكم
+        function loadAdminData() {
+            // محاكاة بيانات الطلبات الأخيرة
+            const recentOrdersHTML = `
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>العميل</th>
+                            <th>المنتج</th>
+                            <th>السعر</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1001</td>
+                            <td>أحمد محمد</td>
+                            <td>آيدي نيم - King</td>
+                            <td>15$</td>
+                            <td><span class="status-pending">في الانتظار</span></td>
+                            <td>
+                                <button class="action-btn approve" onclick="approveOrder(1001)">موافقة</button>
+                                <button class="action-btn reject" onclick="rejectOrder(1001)">رفض</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#1002</td>
+                            <td>سارة أحمد</td>
+                            <td>آيدي ثنائي - 55</td>
+                            <td>75$</td>
+                            <td><span class="status-approved">مقبول</span></td>
+                            <td>
+                                <button class="action-btn complete" onclick="completeOrder(1002)">إكمال</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#1003</td>
+                            <td>محمد علي</td>
+                            <td>باقة VIP</td>
+                            <td>50$</td>
+                            <td><span class="status-completed">مكتمل</span></td>
+                            <td>
+                                <button class="action-btn view" onclick="viewOrderDetails(1003)">عرض</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('recentOrders').innerHTML = recentOrdersHTML;
+        }
+
+        // وظائف إدارة الطلبات
+        function viewOrders() {
+            alert('عرض جميع الطلبات - سيتم تطويره');
+        }
+
+        function viewMembers() {
+            alert('إدارة الأعضاء - سيتم تطويره');
+        }
+
+        function viewSales() {
+            alert('تقرير المبيعات - سيتم تطويره');
+        }
+
+        function openSettings() {
+            if (currentUser?.role !== 'owner') {
+                alert('هذه الوظيفة متاحة للمالك فقط');
+                return;
+            }
+            alert('إعدادات النظام - سيتم تطويره');
+        }
+
+        function approveOrder(orderId) {
+            if (confirm(`موافقة على الطلب #${orderId}؟`)) {
+                alert(`تم قبول الطلب #${orderId}`);
+                loadAdminData();
+            }
+        }
+
+        function rejectOrder(orderId) {
+            if (confirm(`رفض الطلب #${orderId}؟`)) {
+                alert(`تم رفض الطلب #${orderId}`);
+                loadAdminData();
+            }
+        }
+
+        function completeOrder(orderId) {
+            if (confirm(`إكمال الطلب #${orderId}؟`)) {
+                alert(`تم إكمال الطلب #${orderId}`);
+                loadAdminData();
+            }
+        }
+
+        function viewOrderDetails(orderId) {
+            alert(`تفاصيل الطلب #${orderId} - سيتم تطويره`);
+        }
+
+        // التنقل بين الأقسام
+        document.addEventListener('click', function(e) {
+            const href = e.target.getAttribute('href') || e.target.closest('a')?.getAttribute('href');
+            
+            if (href === '#admin') {
+                e.preventDefault();
+                showAdminPanel();
+            } else if (href === '#store') {
+                e.preventDefault();
+                document.getElementById('admin').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            }
+        });
+    </script>
+
+    <!-- فوتر الموقع -->
+    <footer class="site-footer" id="siteFooter" style="display: none;">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://i.ibb.co/99mqbZ9P/512.png" alt="شعار المتجر">
+                        <h3>𝐀𝐛𝐮 𝐃𝐡𝐚𝐛𝐢 𝐡𝐞𝐫𝐨𝐞𝐬 𝐑𝐏</h3>
+                    </div>
+                    <p>المتجر الرسمي لسيرفر أبطال أبوظبي للرول بلاي</p>
+                    
+                    <div class="social-links">
+                        <a href="https://discord.gg/Bty6gpqt" target="_blank" class="social-link discord">
+                            <i class="fab fa-discord"></i>
+                            <span>انضم لسيرفر الديسكورد</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>روابط مهمة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#store">المتجر</a></li>
+                        <li><a href="#rules">القوانين</a></li>
+                        <li><a href="#payment">طرق الدفع</a></li>
+                        <li><a href="#ids">الآيديات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>معلومات المتجر</h4>
+                    <ul class="footer-info">
+                        <li><i class="fas fa-shield-alt"></i> آمن ومضمون</li>
+                        <li><i class="fas fa-clock"></i> متاح 24/7</li>
+                        <li><i class="fas fa-headset"></i> دعم فني متطور</li>
+                        <li><i class="fas fa-star"></i> جودة عالية</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 متجر أبطال أبوظبي الرسمي - جميع الحقوق محفوظة</p>
+                <p class="discord-id">ID السيرفر: 1324554352077307994</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
